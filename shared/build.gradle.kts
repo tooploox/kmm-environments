@@ -1,6 +1,9 @@
+import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
+
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
+    id("com.codingfeline.buildkonfig")
 }
 
 kotlin {
@@ -49,6 +52,28 @@ kotlin {
             iosArm64Test.dependsOn(this)
             iosSimulatorArm64Test.dependsOn(this)
         }
+    }
+}
+
+val baseUrlKey = "baseUrl"
+val devBaseUrl = "https://dev-environment.example.com/"
+val prodBaseUrl = "https://prod-environment.example.com/"
+
+buildkonfig {
+    packageName = "com.kmm-basic-sample.shared"
+    objectName = "BuildConfigData"
+    exposeObjectWithName = "BuildConfigData"
+
+    defaultConfigs {
+        // non-flavored defaultConfigs must be provided.
+    }
+
+    defaultConfigs("dev") {
+        buildConfigField(STRING, baseUrlKey, devBaseUrl)
+    }
+
+    defaultConfigs("prod") {
+        buildConfigField(STRING, baseUrlKey, prodBaseUrl)
     }
 }
 
